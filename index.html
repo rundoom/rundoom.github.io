@@ -1,47 +1,38 @@
-<!DOCTYPE html>
-<html lang="ru">
+﻿<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=tg://resolve?domain=threedboris&post=18">
-    <title>Перенаправление в Telegram</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .link {
-            color: #0088cc;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h2>Перенаправление в Telegram</h2>
-    <p>Если перенаправление не произошло автоматически, нажмите на ссылку ниже:</p>
-    <a href="tg://resolve?domain=threedboris&post=18" class="link">Открыть в Telegram</a>
-</div>
+    <meta charset="utf-8">
 
-<script>
-    // Дополнительное JavaScript перенаправление
-    setTimeout(function() {
-        window.location.href = "tg://resolve?domain=threedboris&post=18";
-    }, 100);
-</script>
+    <title>coin_key_test</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="outerContainer">
+        <h3 class="written-in-ink"><a href="https://www.inklestudios.com/ink">WRITTEN IN INK</a></h3>
+
+        <div id="controls" class="buttons">
+          <a id="rewind" title="Restart story from beginning">restart</a>
+          <a id="save" title="Save progress">save</a>
+          <a id="reload" title="Reload from save point">load</a>
+          <a id="theme-switch" title="Switch theme">theme</a>
+        </div>
+
+        <div id="story" class="container">
+            <div class="header">
+                <h1>coin_key_test</h1>
+                <h2 class="byline"></h2>
+            </div>
+        </div>
+    </div>
+
+    <script src="ink.js"></script>
+    <script src="coin_key_test.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
