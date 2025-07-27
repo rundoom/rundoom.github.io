@@ -360,11 +360,23 @@
             var isClickable = true;
             var customClasses = [];
             var choiceTags = choice.tags || [];
+        var displayText = choice.text; // Начинаем с оригинального текста
 
             for (var i = 0; i < choiceTags.length; i++) {
                 var tag = choiceTags[i];
-                if (tag.toUpperCase() === "UNCLICKABLE") {
+
+            // Проверяем на unclickable с возможным аргументом
+            if (tag.toLowerCase().startsWith("unclickable")) {
                     isClickable = false;
+
+                // Проверяем есть ли аргумент после двоеточия
+                var colonIndex = tag.indexOf(":");
+                if (colonIndex !== -1) {
+                    var knotName = tag.substr(colonIndex + 1).trim();
+                    if (knotName) {
+                        displayText = choice.text + " (Out of content: " + knotName + ")";
+                    }
+                }
                 }
 
                 var splitTag = splitPropertyTag(tag);
@@ -381,7 +393,7 @@
             if (isClickable) {
                 var link = document.createElement('a');
                 link.href = '#';
-                link.textContent = choice.text;
+            link.textContent = displayText;
                 link.addEventListener('click', function(choiceIndex) {
                     return function(event) {
                         event.preventDefault();
@@ -393,7 +405,7 @@
             } else {
                 var span = document.createElement('span');
                 span.classList.add('unclickable');
-                span.textContent = choice.text;
+            span.textContent = displayText;
                 choiceElement.appendChild(span);
             }
 
