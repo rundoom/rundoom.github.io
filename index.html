@@ -1,38 +1,71 @@
 ﻿<!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
-
-    <title>coin_key_test</title>
-
+    <title>Семь чакр этого здания</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
-
-    <div class="outerContainer">
-        <h3 class="written-in-ink"><a href="https://www.inklestudios.com/ink">WRITTEN IN INK</a></h3>
-
-        <div id="controls" class="buttons">
-          <a id="rewind" title="Restart story from beginning">restart</a>
-          <a id="save" title="Save progress">save</a>
-          <a id="reload" title="Reload from save point">load</a>
-          <a id="theme-switch" title="Switch theme">theme</a>
+<!-- Основной контейнер с 4 панелями -->
+<div class="game-container">
+    <!-- Верхняя левая панель - Основной текст истории -->
+    <div class="panel story-panel">
+        <div class="panel-header">
+            <h1 id="story-title">Семь чакр этого здания</h1>
         </div>
+        <div class="panel-content" id="story-content">
+            <!-- Сюда будет добавляться текст истории -->
+        </div>
+    </div>
 
-        <div id="story" class="container">
-            <div class="header">
-                <h1>coin_key_test</h1>
-                <h2 class="byline"></h2>
+    <!-- Верхняя правая панель - Картинка -->
+    <div class="panel image-panel">
+        <div class="panel-content" id="image-content">
+            <div class="placeholder-image">
+                <span>Изображение</span>
             </div>
         </div>
     </div>
 
-    <script src="ink.js"></script>
-    <script src="coin_key_test.js"></script>
-    <script src="main.js"></script>
+    <!-- Нижняя левая панель - Варианты действий -->
+    <div class="panel choices-panel">
+        <div class="panel-header">
+            <h3>Действия</h3>
+        </div>
+        <div class="panel-content" id="choices-content">
+            <!-- Сюда будут добавляться варианты выбора -->
+        </div>
+    </div>
+
+    <!-- Нижняя правая панель - Статус персонажа -->
+    <div class="panel status-panel">
+        <div class="panel-header">
+            <h3>Статус</h3>
+        </div>
+        <div class="panel-content" id="status-content">
+            <!-- Сюда будет добавляться информация о статусе -->
+            <div class="status-placeholder">
+                <p>📍 Локация: Загрузка...</p>
+                <p>❤️ Здоровье: --/--</p>
+                <p>🎒 Инвентарь: Загрузка...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Панель управления -->
+<div id="controls" class="controls">
+    <button id="rewind" title="Перезапустить историю">🔄 Рестарт</button>
+    <button id="save" title="Сохранить прогресс">💾 Сохранить</button>
+    <button id="reload" title="Загрузить сохранение">📁 Загрузить</button>
+    <button id="theme-switch" title="Сменить тему">🌓 Тема</button>
+</div>
+
+<!-- Подключаем скрипты -->
+<script src="ink.js"></script>
+<script src="coin_key_test.js"></script>
+<script src="main.js"></script>
 </body>
 </html>

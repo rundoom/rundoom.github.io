@@ -1,306 +1,338 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,700|Quattrocento:700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Roboto+Mono:400,700');
+
+/* Основные переменные */
+:root {
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2d2d2d;
+    --panel-bg: #3a3a3a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #555;
+    --accent-color: #4a9eff;
+    --choice-bg: #2a4a2a;
+    --choice-hover: #3a5a3a;
+    --status-bg: #2a2a4a;
+}
+
+/* Светлая тема */
+body.light {
+    --primary-bg: #f5f5f5;
+    --secondary-bg: #ffffff;
+    --panel-bg: #fafafa;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #ddd;
+    --accent-color: #0066cc;
+    --choice-bg: #e8f5e8;
+    --choice-hover: #d4f4d4;
+    --status-bg: #e8e8f5;
+}
+
+/* Базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: 'Open Sans', sans-serif;
-    font-weight: lighter;
-    background: white;
+    font-weight: 300;
+    background: var(--primary-bg);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Основной контейнер игры */
+.game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 100vh;
+    gap: 2px;
+    background: var(--primary-bg);
+    padding: 2px;
+}
+
+/* Общие стили для панелей */
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
 }
 
-@media screen and (prefers-reduced-motion: no-preference) {
-    body.switched {
-        transition: color 0.6s, background-color 0.6s;
-    }
+.panel-header {
+    background: var(--secondary-bg);
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-h1,
-h2 {
-    text-align: center;
-    font-family: "Quattrocento", Georgia, 'Times New Roman', Times, serif;
-    margin: 0;
+.panel-header h1 {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text-primary);
+}
+
+.panel-header h3 {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.panel-content {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.panel-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.panel-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+/* Панель истории (верхняя левая) */
+.story-panel {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.story-panel .panel-content {
+    line-height: 1.6;
+}
+
+.story-panel p {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.story-panel p:last-child {
+    margin-bottom: 0;
+}
+
+/* Панель изображения (верхняя правая) */
+.image-panel {
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.image-panel .panel-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0;
 }
 
-h1 {
-    font-size: 30pt;
-    margin-bottom: 10px;
-}
-
-h2 {
-    font-size: 14pt;
-    font-style: italic;
-    font-family: sans-serif;
-    font-weight: lighter;
-    color: #BBB;
-}
-
-.header {
-    padding-top: 3em;
-    padding-bottom: 3em;
-}
-
-/*
-  Built-in class:
-    # author: Name
-*/
-.byline {
-    font-style: italic;
-}
-
-.written-in-ink {
-    z-index: 3;
-    font-size: 9pt;
-    font-family: sans-serif;
-    text-align: center;
-    font-weight: 700;
-    position: fixed;
-    display: block;
+.placeholder-image {
     width: 100%;
-    background: white;
-    margin: 0;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    height: 14px;
-    top: 0;
-}
-
-@media screen and (prefers-reduced-motion: no-preference) {
-    .written-in-ink {
-        transition: color 0.6s, background 0.6s;
-    }
-}
-
-/* 
-  Enables <iframe> support work on itch.io when using mobile iOS
-*/
-.outerContainer {
-    position: absolute;
-    display: block;
-    margin: 0;
-    padding: 0;
-    -webkit-overflow-scrolling: touch;
-    overflow: scroll;
-    overflow-x: hidden;
     height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    margin-top: 24px;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: var(--secondary-bg);
+    border: 2px dashed var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-style: italic;
 }
 
-@media screen and (max-width: 980px) {
-    .outerContainer {
-        margin-top: 44px;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
+.image-panel img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
-.container {
+/* Панель выборов (нижняя левая) */
+.choices-panel {
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.choice {
+    background: var(--choice-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.choice:last-child {
+    margin-bottom: 0;
+}
+
+.choice:hover {
+    background: var(--choice-hover);
+}
+
+.choice a {
     display: block;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    padding-top: 4em;
-    background: white;
-}
-
-@media screen and (prefers-reduced-motion: no-preference) {
-    .switched .container {
-        transition: background-color 0.6s;
-    }
-}
-
-p {
-    font-size: 13pt;
-    color: #888;
-    line-height: 1.7em;
-    font-weight: lighter;
-}
-
-a {
-    font-weight: 700;
-    color: #b97c2c;
-    font-family: sans-serif;
+    padding: 12px 15px;
+    color: var(--text-primary);
     text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
 }
 
-.unclickable {
-    font-weight: 700;
-    color: #4f3411;
-    font-family: sans-serif;
-    text-decoration: none;
+.choice .unclickable {
+    display: block;
+    padding: 12px 15px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0.6;
     cursor: not-allowed;
 }
 
-a:hover {
-    color: black;
+/* Панель статуса (нижняя правая) */
+.status-panel {
+    grid-row: 2;
+    grid-column: 2;
+    background: var(--status-bg);
 }
 
-@media screen and (prefers-reduced-motion: no-preference) {
-    a {
-        transition: color 0.6s;
-    }
-
-    a:hover {
-        transition: color 0.1s;
-    }
+.status-content {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    line-height: 1.5;
 }
 
-strong {
-    color: black;
-    font-weight: bold;
+.status-content p {
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    background: var(--secondary-bg);
+    border-radius: 3px;
+    border-left: 3px solid var(--accent-color);
 }
 
-img {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
+.status-content p:last-child {
+    margin-bottom: 0;
 }
 
-.container .hide {
-    opacity: 0.0;
-}
-
-.container .invisible {
-    display: none;
-}
-
-.container>* {
-    opacity: 1.0;
-}
-
-@media screen and (prefers-reduced-motion: no-preference) {
-    .container>* {
-        transition: opacity 1.0s;
-    }
-}
-
-/*
-  Class applied to all choices
-  (Will always appear inside <p> element by default.)
-*/
-.choice {
-    text-align: center;
-    line-height: 1.7em;
-}
-
-/* 
-  Class applied to first choice
-*/
-:not(.choice)+.choice {
-    padding-top: 1em;
-}
-
-/*
-  Class applied to choice links
-*/
-.choice a, .choice span {
-    font-size: 15pt;
-}
-
-/* 
-  Built-in class:
-    The End # CLASS: end
-*/
-.end {
-    text-align: center;
-    font-weight: bold;
-    color: black;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-#controls {
-    z-index: 4;
-    font-size: 9pt;
-    text-align: center;
-    padding-bottom: 6px;
+/* Панель управления */
+.controls {
     position: fixed;
-    right: 14px;
-    top: 4px;
-    user-select: none;
-    background: white;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 1000;
 }
 
-@media screen and (prefers-reduced-motion: no-preference) {
-    #controls {
-        transition: color 0.6s, background 0.6s;
+.controls button {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.controls button:hover:not(:disabled) {
+    background: var(--accent-color);
+    color: white;
+}
+
+.controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Анимации */
+.panel-content > *:not(.hide) {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-#controls [disabled] {
-    color: #ccc;
+.hide {
+    opacity: 0;
 }
 
-#controls>*:not(:last-child):after {
-    content: " | ";
-}
+/* Адаптивность для мобильных устройств */
+@media screen and (max-width: 768px) {
+    .game-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 200px 1fr 200px;
+        gap: 1px;
+        padding: 1px;
+    }
 
-@media screen and (max-width: 980px) {
-    #controls {
-        z-index: 2;
-        padding-top: 24px;
-        top: 0;
-        left: 0;
-        right: 0;
+    .story-panel {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .image-panel {
+        grid-row: 2;
+        grid-column: 1;
+    }
+
+    .choices-panel {
+        grid-row: 3;
+        grid-column: 1;
+    }
+
+    .status-panel {
+        grid-row: 4;
+        grid-column: 1;
+    }
+
+    .controls {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        flex-direction: column;
+    }
+
+    .panel-content {
+        padding: 10px;
+    }
+
+    .panel-header {
+        padding: 8px 10px;
     }
 }
 
-/* 
-  Dark Theme (Added in Inky 0.10.0)
-    # theme: dark
-*/
+/* Дополнительные стили для специальных элементов */
+.status-separator {
+    border-top: 1px solid var(--border-color);
+    margin: 10px 0;
+}
 
-body.dark {
-    background: black;
+.inventory-item {
+    display: inline-block;
+    background: var(--accent-color);
     color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    margin: 2px;
 }
 
-.dark h2 {
-    color: #666;
-}
-
-.dark .container {
-    background: black;
-}
-
-.dark .written-in-ink {
-    background: black;
-}
-
-.dark a {
-    color: #cc8f1a;
-}
-.dark .unclickable{
-    color: #c4af87;
-    cursor:not-allowed;
-}
-
-.dark a:hover {
-    color: white;
-}
-
-@media screen and (prefers-reduced-motion: no-preference) {
-    .dark a {
-        transition: color 0.6s;
-    }
-}
-
-.dark strong {
-    color: white;
-}
-
-.dark #controls [disabled] {
-    color: #444;
-}
-
-.dark .end {
-    color: white;
-}
-
-.dark #controls {
-    background: black;
-}
+/* Темная тема по умолчанию уже настроена через CSS переменные */
