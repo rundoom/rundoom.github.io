@@ -6,6 +6,7 @@
     var savePoint = "";
     var savedTheme;
     var globalTagTheme;
+    var lastChoiceText = ""; // Хранение последнего выбранного действия
 
     // Получаем ссылки на панели
     var storyPanel = document.getElementById('story-content');
@@ -42,6 +43,10 @@
     savePoint = story.state.toJson();
 
     // Запуск истории
+    if (hasSave && lastChoiceText) {
+        // Если есть сохранение и последнее действие, показываем его
+        addStoryBlock('choice', lastChoiceText);
+    }
     continueStory(true);
 
     // Основная функция продолжения истории
@@ -106,13 +111,8 @@
 
         // Обновляем панель истории если есть новый контент
         if (hasNewContent) {
-            // Если это не первый запуск, добавляем как блок результата
-            if (!firstTime) {
-                addStoryBlock('result', storyText.trim());
-            } else {
-                // При первом запуске просто добавляем текст
-                updateStoryPanel(storyText.trim());
-            }
+            // Всегда добавляем как блок результата (даже при первом запуске)
+            addStoryBlock('result', storyText.trim());
         }
 
         // Обновляем статус персонажа
@@ -403,8 +403,9 @@
         // Очищаем панель выборов
         choicesPanel.innerHTML = '<p style="color: var(--text-secondary); font-style: italic;">Выполняется...</p>';
 
-        // Добавляем блок с выбранным действием
+        // Добавляем блок с выбранным действием и сохраняем его
         if (selectedChoice) {
+            lastChoiceText = selectedChoice.text;
             addStoryBlock('choice', selectedChoice.text);
         }
 
@@ -430,6 +431,7 @@
     // Перезапуск игры
     function restart() {
         story.ResetState();
+        lastChoiceText = ""; // Сбрасываем последнее действие
         clearPanel(storyPanel);
         clearPanel(choicesPanel);
 
@@ -461,8 +463,11 @@
     function loadSavePoint() {
         try {
             var savedState = window.localStorage.getItem('ink-save-state');
+            var savedLastChoice = window.localStorage.getItem('ink-last-choice');
+
             if (savedState) {
                 story.state.LoadJson(savedState);
+                lastChoiceText = savedLastChoice || "";
                 return true;
             }
         } catch (e) {
@@ -503,6 +508,7 @@
             saveEl.addEventListener("click", function() {
                 try {
                     window.localStorage.setItem('ink-save-state', savePoint);
+                    window.localStorage.setItem('ink-last-choice', lastChoiceText);
                     document.getElementById("reload").removeAttribute("disabled");
                     window.localStorage.setItem('ink-theme', document.body.classList.contains("light") ? "light" : "dark");
 
@@ -527,10 +533,20 @@
 
                 try {
                     var savedState = window.localStorage.getItem('ink-save-state');
+                    var savedLastChoice = window.localStorage.getItem('ink-last-choice');
+
                     if (savedState) {
                         story.state.LoadJson(savedState);
+                        lastChoiceText = savedLastChoice || "";
+
                         clearPanel(storyPanel);
                         clearPanel(choicesPanel);
+
+                        // Если есть последнее действие, показываем его перед текущим состоянием
+                        if (lastChoiceText) {
+                            addStoryBlock('choice', lastChoiceText);
+                        }
+
                         continueStory(true);
                     }
                 } catch (e) {
