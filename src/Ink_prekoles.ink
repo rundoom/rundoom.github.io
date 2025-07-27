@@ -50,7 +50,7 @@ VAR money_name = "Рублей"
 }
 
 === function get_inventory_display() ===
-{inventory == (): Пусто|{inventory}}
+{inventory == (): Пусто|{iterate("", inventory)}}
 
 === function to_inventory(ref list_from, item) ===
 ~ list_from -= item
