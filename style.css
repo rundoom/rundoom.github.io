@@ -305,7 +305,13 @@ body {
 }
 
 /* Анимации */
-.panel-content > *:not(.hide) {
+/* УБИРАЕМ глобальную анимацию для всех панелей */
+/* .panel-content > *:not(.hide) {
+    animation: fadeIn 0.3s ease-in-out;
+} */
+
+/* Применяем анимацию ТОЛЬКО к элементам выборов */
+.choices-panel .panel-content > *:not(.hide) {
     animation: fadeIn 0.3s ease-in-out;
 }
 
