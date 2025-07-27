@@ -6,7 +6,7 @@
     var savePoint = "";
     var savedTheme;
     var globalTagTheme;
-    var lastChoiceText = ""; // Хранение последнего выбранного действия
+    var lastChoiceText = ""; // Сохраняем последнее действие
 
     // Получаем ссылки на панели
     var storyPanel = document.getElementById('story-content');
@@ -39,15 +39,16 @@
     var hasSave = loadSavePoint();
     setupButtons(hasSave);
 
-    // Установка начальной точки сохранения
-    savePoint = story.state.toJson();
+    // Установка начальной точки сохранения (только если не загружали сохранение)
+    if (!hasSave) {
+        savePoint = JSON.stringify({
+            storyState: story.state.toJson(),
+            lastChoice: ""
+        });
+    }
 
     // Запуск истории
-    if (hasSave && lastChoiceText) {
-        // Если есть сохранение и последнее действие, показываем его
-        addStoryBlock('choice', lastChoiceText);
-    }
-    continueStory(true);
+    continueStory(!hasSave); // true только если это новая игра, не загрузка
 
     // Основная функция продолжения истории
     function continueStory(firstTime) {
@@ -111,7 +112,7 @@
 
         // Обновляем панель истории если есть новый контент
         if (hasNewContent) {
-            // Всегда добавляем как блок результата (даже при первом запуске)
+            // Всегда добавляем как блок результата (для единообразия)
             addStoryBlock('result', storyText.trim());
         }
 
@@ -403,17 +404,20 @@
         // Очищаем панель выборов
         choicesPanel.innerHTML = '<p style="color: var(--text-secondary); font-style: italic;">Выполняется...</p>';
 
-        // Добавляем блок с выбранным действием и сохраняем его
+        // Добавляем блок с выбранным действием
         if (selectedChoice) {
-            lastChoiceText = selectedChoice.text;
+            lastChoiceText = selectedChoice.text; // Сохраняем выбор
             addStoryBlock('choice', selectedChoice.text);
         }
 
         // Выбираем вариант
         story.ChooseChoiceIndex(choiceIndex);
 
-        // Обновляем точку сохранения
-        savePoint = story.state.toJson();
+        // Обновляем точку сохранения (включая последнее действие)
+        savePoint = JSON.stringify({
+            storyState: story.state.toJson(),
+            lastChoice: lastChoiceText
+        });
 
         // Продолжаем историю
         setTimeout(function() {
@@ -431,7 +435,7 @@
     // Перезапуск игры
     function restart() {
         story.ResetState();
-        lastChoiceText = ""; // Сбрасываем последнее действие
+        lastChoiceText = ""; // Сбрасываем последний выбор
         clearPanel(storyPanel);
         clearPanel(choicesPanel);
 
@@ -441,7 +445,10 @@
         // Сброс статуса
         statusPanel.innerHTML = '<div class="status-placeholder"><p>📍 Локация: Загрузка...</p><p>❤️ Здоровье: --/--</p><p>🎒 Инвентарь: Загрузка...</p></div>';
 
-        savePoint = story.state.toJson();
+        savePoint = JSON.stringify({
+            storyState: story.state.toJson(),
+            lastChoice: ""
+        });
         continueStory(true);
     }
 
@@ -462,12 +469,29 @@
     // Загрузка сохранения
     function loadSavePoint() {
         try {
-            var savedState = window.localStorage.getItem('ink-save-state');
-            var savedLastChoice = window.localStorage.getItem('ink-last-choice');
+            var savedData = window.localStorage.getItem('ink-save-state');
+            if (savedData) {
+                var parsedData = JSON.parse(savedData);
 
-            if (savedState) {
-                story.state.LoadJson(savedState);
-                lastChoiceText = savedLastChoice || "";
+                // Поддержка старого формата сохранений (только состояние истории)
+                if (typeof parsedData === 'string') {
+                    story.state.LoadJson(parsedData);
+                    lastChoiceText = "";
+                } else {
+                    // Новый формат (состояние + последний выбор)
+                    story.state.LoadJson(parsedData.storyState);
+                    lastChoiceText = parsedData.lastChoice || "";
+                }
+
+                // Очищаем панели
+                clearPanel(storyPanel);
+                clearPanel(choicesPanel);
+
+                // Показываем последнее действие при загрузке (если есть)
+                if (lastChoiceText) {
+                    addStoryBlock('choice', lastChoiceText);
+                }
+
                 return true;
             }
         } catch (e) {
@@ -508,7 +532,6 @@
             saveEl.addEventListener("click", function() {
                 try {
                     window.localStorage.setItem('ink-save-state', savePoint);
-                    window.localStorage.setItem('ink-last-choice', lastChoiceText);
                     document.getElementById("reload").removeAttribute("disabled");
                     window.localStorage.setItem('ink-theme', document.body.classList.contains("light") ? "light" : "dark");
 
@@ -531,27 +554,8 @@
             reloadEl.addEventListener("click", function() {
                 if (reloadEl.getAttribute("disabled")) return;
 
-                try {
-                    var savedState = window.localStorage.getItem('ink-save-state');
-                    var savedLastChoice = window.localStorage.getItem('ink-last-choice');
-
-                    if (savedState) {
-                        story.state.LoadJson(savedState);
-                        lastChoiceText = savedLastChoice || "";
-
-                        clearPanel(storyPanel);
-                        clearPanel(choicesPanel);
-
-                        // Если есть последнее действие, показываем его перед текущим состоянием
-                        if (lastChoiceText) {
-                            addStoryBlock('choice', lastChoiceText);
-                        }
-
-                        continueStory(true);
-                    }
-                } catch (e) {
-                    console.debug("Couldn't load save state");
-                }
+                // Просто перезагружаем страницу - это проще и надежнее
+                window.location.reload();
             });
         }
 
