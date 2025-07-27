@@ -12,10 +12,7 @@ LIST start_items = (Зажигалка), (Телефон)//Тут объявля
 # IMAGE: b4b4b459-8e90-4f7e-953b-4074b9f70847.png
 Вы находитесь в таинственной комнате. 
 В углу есть запертая дверь. {iterate("На полу есть", mysterious_room_content)} {iterate("а так же", other_collectables)}. 
-* [Взять ключ] 
-{to_inventory(mysterious_room_content, Ключ)}
-  Вы взяли ключ.
-  -> move(-> mysterious_room)
+* [Взять ключ] -> mysterious_room.take_key
 * [Взять монету] 
   {to_inventory(mysterious_room_content, Монета)}//Отнимаем Монету у локации и передаём в инвентарь
   Вы взяли монету.
@@ -27,6 +24,12 @@ LIST start_items = (Зажигалка), (Телефон)//Тут объявля
 ~ hp -= 5
 Это было больно и неэффективно
 -> move(-> mysterious_room)
+
+= take_key
+{to_inventory(mysterious_room_content, Ключ)}
+# IMAGE: 550878ac-6a1b-4bf4-9297-59ebdea5bd6c.png
+Вы взяли ключ.
+* [Продолжить] -> move(-> mysterious_room)
 
 = use_key
 ~ inventory -= Ключ
