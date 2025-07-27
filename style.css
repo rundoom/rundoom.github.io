@@ -147,13 +147,14 @@ body {
 .choice-header {
     font-weight: 600;
     color: var(--accent-color);
-    margin-bottom: 8px;
+    margin-bottom: 0; /* ИЗМЕНЕНО с 8px на 0 */
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.choice-text {
+/* УБИРАЕМ стили для .choice-text, так как он больше не используется */
+/* .choice-text {
     font-style: italic;
     color: var(--text-primary);
     font-size: 14px;

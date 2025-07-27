@@ -134,8 +134,8 @@
         blockDiv.classList.add('story-block-' + type);
 
         if (type === 'choice') {
-            // Блок с выбранным действием
-            blockDiv.innerHTML = '<div class="choice-header">▶ Вы выбрали:</div><div class="choice-text">' + text + '</div>';
+            // Блок с выбранным действием - ИСПРАВЛЕНО
+            blockDiv.innerHTML = '<div class="choice-header">▶ ' + text + '</div>';
         } else if (type === 'result') {
             // Блок с результатом действия
             var paragraphs = text.split('\n\n');
