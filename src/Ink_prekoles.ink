@@ -58,7 +58,7 @@ VAR money_name = "Рублей"
 
 
 === status_thread ===
-{show_status()}
+// {show_status()}
 {hp <= 0:
 П О Т Р А Ч Е Н О
 -> end_game
