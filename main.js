@@ -106,7 +106,13 @@
 
         // Обновляем панель истории если есть новый контент
         if (hasNewContent) {
-            updateStoryPanel(storyText.trim());
+            // Если это не первый запуск, добавляем как блок результата
+            if (!firstTime) {
+                addStoryBlock('result', storyText.trim());
+            } else {
+                // При первом запуске просто добавляем текст
+                updateStoryPanel(storyText.trim());
+            }
         }
 
         // Обновляем статус персонажа
@@ -114,6 +120,41 @@
 
         // Обновляем выборы
         updateChoicesPanel();
+    }
+
+    // Добавление блока истории (выбор или результат)
+    function addStoryBlock(type, text) {
+        var blockDiv = document.createElement('div');
+        blockDiv.classList.add('story-block');
+        blockDiv.classList.add('story-block-' + type);
+
+        if (type === 'choice') {
+            // Блок с выбранным действием
+            blockDiv.innerHTML = '<div class="choice-header">▶ Вы выбрали:</div><div class="choice-text">' + text + '</div>';
+        } else if (type === 'result') {
+            // Блок с результатом действия
+            var paragraphs = text.split('\n\n');
+            var content = '';
+            for (var i = 0; i < paragraphs.length; i++) {
+                if (paragraphs[i].trim()) {
+                    content += '<p>' + paragraphs[i].trim() + '</p>';
+                }
+            }
+            blockDiv.innerHTML = content;
+        }
+
+        // Добавляем с анимацией
+        blockDiv.classList.add('hide');
+        storyPanel.appendChild(blockDiv);
+
+        setTimeout(function() {
+            blockDiv.classList.remove('hide');
+        }, 50);
+
+        // Прокрутка вниз
+        setTimeout(function() {
+            storyPanel.scrollTop = storyPanel.scrollHeight;
+        }, 100);
     }
 
     // Обновление панели истории
@@ -349,8 +390,23 @@
 
     // Выполнение выбора
     function makeChoice(choiceIndex) {
+        // Находим выбранный вариант
+        var selectedChoice = null;
+        var choices = story.currentChoices;
+        for (var i = 0; i < choices.length; i++) {
+            if (choices[i].index === choiceIndex) {
+                selectedChoice = choices[i];
+                break;
+            }
+        }
+
         // Очищаем панель выборов
         choicesPanel.innerHTML = '<p style="color: var(--text-secondary); font-style: italic;">Выполняется...</p>';
+
+        // Добавляем блок с выбранным действием
+        if (selectedChoice) {
+            addStoryBlock('choice', selectedChoice.text);
+        }
 
         // Выбираем вариант
         story.ChooseChoiceIndex(choiceIndex);

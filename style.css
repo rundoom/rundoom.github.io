@@ -126,6 +126,56 @@ body {
     margin-bottom: 0;
 }
 
+/* Блоки истории */
+.story-block {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid var(--border-color);
+}
+
+.story-block:last-child {
+    margin-bottom: 0;
+}
+
+/* Блок с выбранным действием */
+.story-block-choice {
+    background: var(--choice-bg);
+    border-left-color: var(--accent-color);
+}
+
+.choice-header {
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.choice-text {
+    font-style: italic;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+/* Блок с результатом действия */
+.story-block-result {
+    background: var(--panel-bg);
+    border-left-color: var(--text-secondary);
+}
+
+.story-block-result p {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.story-block-result p:last-child {
+    margin-bottom: 0;
+}
+
 /* Панель изображения (верхняя правая) */
 .image-panel {
     grid-row: 1;
