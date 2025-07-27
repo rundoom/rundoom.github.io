@@ -7,6 +7,7 @@
     var savedTheme;
     var globalTagTheme;
     var lastChoiceText = ""; // Сохраняем последнее действие
+    window.hasDoneChoice = false
 
     // Получаем ссылки на панели
     var storyPanel = document.getElementById('story-content');
@@ -384,6 +385,7 @@
                 link.addEventListener('click', function(choiceIndex) {
                     return function(event) {
                         event.preventDefault();
+                        window.hasDoneChoice = true
                         makeChoice(choiceIndex);
                     };
                 }(choice.index));
@@ -588,7 +590,9 @@
         // Сохранение при покидании страницы
         window.addEventListener('beforeunload', function() {
             try {
-                window.localStorage.setItem('ink-save-state', savePoint);
+                if(window.hasDoneChoice) {
+                    window.localStorage.setItem('ink-save-state', savePoint);
+                }
                 window.localStorage.setItem('ink-theme', document.body.classList.contains("light") ? "light" : "dark");
             } catch (e) {
                 console.warn("Couldn't auto-save state");
