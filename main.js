@@ -50,6 +50,9 @@
     // Запуск истории
     continueStory(!hasSave); // true только если это новая игра, не загрузка
 
+    // Автосохранение при покидании страницы
+    setupAutoSave();
+
     // Основная функция продолжения истории
     function continueStory(firstTime) {
         // Очищаем панели при первом запуске
@@ -187,10 +190,17 @@
     function updateImagePanel(imagePath) {
         imagePanel.innerHTML = '';
         var img = document.createElement('img');
-        img.src = imagePath;
+
+        // Автоматически добавляем путь к папке images/ если путь не содержит слеш
+        var fullPath = imagePath;
+        if (imagePath.indexOf('/') === -1 && imagePath.indexOf('http') !== 0) {
+            fullPath = 'images/' + imagePath;
+        }
+
+        img.src = fullPath;
         img.alt = 'Изображение сцены';
         img.onerror = function() {
-            imagePanel.innerHTML = '<div class="placeholder-image"><span>Изображение не найдено</span></div>';
+            imagePanel.innerHTML = '<div class="placeholder-image"><span>Изображение не найдено:<br>' + fullPath + '</span></div>';
         };
         imagePanel.appendChild(img);
     }
@@ -573,5 +583,16 @@
             });
         }
     }
+
+    function setupAutoSave() {
+        // Сохранение при покидании страницы
+        window.addEventListener('beforeunload', function() {
+            try {
+                window.localStorage.setItem('ink-save-state', savePoint);
+                window.localStorage.setItem('ink-theme', document.body.classList.contains("light") ? "light" : "dark");
+            } catch (e) {
+                console.warn("Couldn't auto-save state");
+            }
+        })}
 
 })(storyContent);

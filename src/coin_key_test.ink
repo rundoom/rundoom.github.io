@@ -9,6 +9,7 @@ LIST start_items = (Зажигалка), (Телефон)//Тут объявля
 
 === mysterious_room ===//Knot'ами мы обозначаем локации
 ~ current_location = "Таинственная комната"
+# IMAGE: b4b4b459-8e90-4f7e-953b-4074b9f70847.png
 Вы находитесь в таинственной комнате. 
 В углу есть запертая дверь. {iterate("На полу есть", mysterious_room_content)} {iterate("а так же", other_collectables)}. 
 * [Взять ключ] 
@@ -35,6 +36,7 @@ LIST start_items = (Зажигалка), (Телефон)//Тут объявля
 
 === corridor ===
 ~ current_location = "Коридор"
+# IMAGE: b67f1f2c-886c-4849-91d5-167cff3c9f73.png
 Длинный темный коридор. Здесь довольно пусто.
 + [Вернуться в таинственную комнату] -> move(-> mysterious_room)
 + {inventory has Монета} [Подбросить монету]
